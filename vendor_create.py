@@ -1,10 +1,16 @@
 import requests
 import json
+import os
+from dotenv import load_dotenv
 
-company_id = '32616'
-api_base_endpoint = 'https://sandbox.procore.com/rest/v1.0/vendors?company_id='
-api_token = 'eyJhbGciOiJFUzUxMiJ9.eyJhaWQiOiIxMGE5MjFkNjRhZDNlYTliNTAwMDE4MzgzZDZhNDY0YTczODIyNzU0N2E0NTE0NWRlYTA2NGRjN2IwNjI3NGQ3IiwiYW91aWQiOm51bGwsImFvdXVpZCI6bnVsbCwiZXhwIjoxNjQzNzY0MzQzLCJ1aWQiOjgzMDY3LCJ1dWlkIjoiYmZmMzkxMmUtNTg3Mi00MmJjLThiZjQtMGIyY2E4MjQwZTQwIn0.AA-Lj2ctNSy66y-C_TeVkzkoSAzSRwEw77vIskf9-_uQvkaWtzIegf19uhpNsPNHyRjrBzr_RMtLzmBQe_mYvrdHAQ37xcs7tC1NLiIbO0onpe7KZAMtKXiD8I0cUsSZII6r0blbsPg13ZSo6kM2iPySz2Lvuy3zijpseXD2TVzPODNm'
-header_token = {'Authorization': 'Bearer ' + api_token}
+# Load environment variable
+load_dotenv()
+access_token = os.getenv("ACCESS_TOKEN")
+refresh_token = os.getenv("REFRESH_TOKEN")
+api_endpoint = os.getenv("API_ENDPOINT")
+company_id = os.getenv("COMPANY_ID")
+
+header_token = {'Authorization': 'Bearer ' + access_token}
 
 
 def c_outputter(jsonr):
@@ -19,8 +25,13 @@ def f_outputter(jsonr):
 
 
 # Call Procore Get Vendor API
-ur = api_base_endpoint + company_id
+ur = api_endpoint + company_id
 response = requests.get(ur, headers=header_token)
+if response.status_code == 401:
+    ':except'
+
+else:
+    print(response.status_code)
 
 # Output to file.
 f_outputter(response)
