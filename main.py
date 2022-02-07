@@ -1,8 +1,7 @@
-from urllib import response
-
-import requests
 import json
 import os
+
+import requests
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -20,9 +19,6 @@ redirect_uri = os.getenv('REDIRECT_URI')
 
 header_token = {'Authorization': 'Bearer ' + access_token}
 
-g_response = ''
-g_ur = ''
-
 
 def c_outputer(jsonr):
     outtxt = (json.dumps(jsonr.json(), indent=2))
@@ -36,30 +32,33 @@ def f_outputer(jsonr):
 
 
 def get_new_token():
-    l_ur = oauth_base_endpoint + api_refresh_token + '&client_id=' + client_id + '&client_secret=' + client_secret + '&refresh_token=' + refresh_token + '&redirect_uri=' + redirect_uri
-    l_response = requests.post(l_ur, headers=header_token)
-    if l_response.status_code == 200:
-        os.environ['REFRESH_TOKEN'] = refresh_token
-        os.environ['ACCESS_TOKEN'] = access_token
+    t_ur = oauth_base_endpoint + api_refresh_token + '&client_id=' + client_id + '&client_secret=' + client_secret + '&refresh_token=' + refresh_token + '&redirect_uri=' + redirect_uri
+    t_response = requests.post(t_ur, headers=header_token)
+    if t_response.status_code == 200:
+        jdata = t_response.json()
+        os.environ['REFRESH_TOKEN'] = jdata.refresh_token
+        os.environ['ACCESS_TOKEN'] = jdata.refresh_token
 
 
 def get_vendor():
-    g_ur = base_endpoint + api_vendor + company_id
-    g_response = requests.get(ur, headers=header_token)
-    return response.status_code
+    ur = base_endpoint + api_vendor + company_id
+    v_response = requests.get(ur, headers=header_token)
+    return v_response
 
 
 # Call Procore Get Vendor APIs
 def main():
-    if get_vendor() == 401:
+    v_response = get_vendor()
+    if v_response.status_code == 401:
+        # Token has expired, get new token
         get_new_token()
+        v_response = get_vendor()
     else:
-        print(get_vendor())
         # Output to file.
-        f_outputer(response)
+        f_outputer(v_response)
 
         # Output to the console.
-        c_outputer(response)
+        c_outputer(v_response)
 
 
 if __name__ == "__main__":
