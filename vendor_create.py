@@ -3,7 +3,7 @@ import json
 import os
 from dotenv import load_dotenv
 
-# Load environment variablez
+# Load environment variable
 load_dotenv()
 access_token = os.getenv("ACCESS_TOKEN")
 refresh_token = os.getenv("REFRESH_TOKEN")
