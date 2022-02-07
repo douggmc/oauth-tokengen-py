@@ -3,7 +3,7 @@ import json
 import os
 from dotenv import load_dotenv
 
-# Load environment variable
+# Load environment variables
 load_dotenv()
 access_token = os.getenv("ACCESS_TOKEN")
 refresh_token = os.getenv("REFRESH_TOKEN")
@@ -25,16 +25,20 @@ def f_outputter(jsonr):
 
 
 # Call Procore Get Vendor API
-ur = api_endpoint + company_id
-response = requests.get(ur, headers=header_token)
-if response.status_code == 401:
-    ':except'
+def main():
+    ur = api_endpoint + company_id
+    response = requests.get(ur, headers=header_token)
+    if response.status_code == 401:
+        ':except'
+    else:
+        print(response.status_code)
 
-else:
-    print(response.status_code)
+    # Output to file.
+    f_outputter(response)
 
-# Output to file.
-f_outputter(response)
+    # Output to the console.
+    c_outputter(response)
 
-# Output to the console.
-c_outputter(response)
+if __name__ == "__main__":
+    main()
+
