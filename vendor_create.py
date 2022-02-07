@@ -24,7 +24,7 @@ def f_outputter(jsonr):
     file.close()
 
 
-# Call Procore Get Vendor API
+# Call Procore Get Vendor APIs
 def main():
     ur = api_endpoint + company_id
     response = requests.get(ur, headers=header_token)
@@ -38,6 +38,7 @@ def main():
 
     # Output to the console.
     c_outputter(response)
+
 
 if __name__ == "__main__":
     main()
