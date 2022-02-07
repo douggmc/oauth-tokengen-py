@@ -16,16 +16,17 @@ api_refresh_token = os.getenv('API_REFRESH_TOKEN')
 client_id = os.getenv('CLIENT_ID')
 client_secret = os.getenv('CLIENT_SECRET')
 redirect_uri = os.getenv('REDIRECT_URI')
-
 header_token = {'Authorization': 'Bearer ' + access_token}
 
 
-def c_outputer(jsonr):
+# Outputs the Show Vendor API response to console
+def c_outputter(jsonr):
     outtxt = (json.dumps(jsonr.json(), indent=2))
     print(outtxt)
 
 
-def f_outputer(jsonr):
+# Outputs the Show Vendor API response to a file.
+def f_outputter(jsonr):
     file = open("vendor.json", "w")
     file.write(jsonr.text)
     file.close()
@@ -55,10 +56,10 @@ def main():
         v_response = get_vendor()
     else:
         # Output to file.
-        f_outputer(v_response)
+        f_outputter(v_response)
 
         # Output to the console.
-        c_outputer(v_response)
+        c_outputter(v_response)
 
 
 if __name__ == "__main__":
