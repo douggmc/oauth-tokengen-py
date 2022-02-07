@@ -1,11 +1,12 @@
 import json
 import os
 
+import dotenv
 import requests
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv()
+load_dotenv('.env')
 access_token = os.getenv('ACCESS_TOKEN')
 refresh_token = os.getenv('REFRESH_TOKEN')
 base_endpoint = os.getenv('BASE_ENDPOINT')
@@ -37,8 +38,8 @@ def get_new_token():
     t_response = requests.post(t_ur, headers=header_token)
     if t_response.status_code == 200:
         jdata = t_response.json()
-        os.environ['REFRESH_TOKEN'] = jdata.refresh_token
-        os.environ['ACCESS_TOKEN'] = jdata.refresh_token
+        dotenv.set_key('.env', 'ACCESS_TOKEN', jdata['access_token'])
+        dotenv.set_key('.env', 'REFRESH_TOKEN', jdata['refresh_token'])
 
 
 def get_vendor():
