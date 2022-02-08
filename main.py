@@ -1,9 +1,8 @@
 import json
 import os
 
-import dotenv
 import requests
-from dotenv import load_dotenv
+from dotenv import load_dotenv, set_key
 
 # Load environment variables
 load_dotenv('.env')
@@ -38,8 +37,13 @@ def get_new_token():
     t_response = requests.post(t_ur, headers=header_token)
     if t_response.status_code == 200:
         jdata = t_response.json()
-        dotenv.set_key('.env', 'ACCESS_TOKEN', jdata['access_token'])
-        dotenv.set_key('.env', 'REFRESH_TOKEN', jdata['refresh_token'])
+        l_access_token = jdata['access_token']
+        l_refresh_token = jdata['refresh_token']
+        set_key('.env', 'ACCESS_TOKEN', l_access_token)
+        set_key('.env', 'REFRESH_TOKEN', l_refresh_token)
+        return True
+    else:
+        return False
 
 
 def get_vendor():
@@ -50,17 +54,21 @@ def get_vendor():
 
 # Call Procore Get Vendor APIs
 def main():
+    istrue = False
     v_response = get_vendor()
     if v_response.status_code == 401:
         # Token has expired, get new token
-        get_new_token()
-        v_response = get_vendor()
+        istrue = get_new_token()
+        if istrue:
+            v_response = get_vendor()
+        else:
+            print('Unable to refresh Token')
     else:
         # Output to file.
         f_outputter(v_response)
-
         # Output to the console.
         c_outputter(v_response)
+
 
 
 if __name__ == "__main__":
