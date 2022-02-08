@@ -63,12 +63,11 @@ def main():
             v_response = get_vendor()
         else:
             print('Unable to refresh Token')
-    else:
-        # Output to file.
-        f_outputter(v_response)
-        # Output to the console.
-        c_outputter(v_response)
 
+    # Output to file.
+    f_outputter(v_response)
+    # Output to the console.
+    c_outputter(v_response)
 
 
 if __name__ == "__main__":
