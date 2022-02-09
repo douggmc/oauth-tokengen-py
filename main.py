@@ -36,7 +36,7 @@ def get_new_token():
     t_response = requests.post(t_ur, headers=header_token)
     if t_response.status_code == 200:
         jdata = t_response.json()
-        l_access_token = jdata['access_token']
+        access_token = l_access_token = jdata['access_token']
         l_refresh_token = jdata['refresh_token']
         set_key('.env', 'ACCESS_TOKEN', l_access_token)
         set_key('.env', 'REFRESH_TOKEN', l_refresh_token)
@@ -59,6 +59,7 @@ def main():
         # Token has expired, get new token
         istrue = get_new_token()
         if istrue:
+            header_token = {'Authorization': 'Bearer ' + access_token}
             v_response = get_vendor()
         else:
             print('Unable to refresh Token')
