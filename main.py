@@ -3,7 +3,7 @@ import os
 import requests
 from dotenv import load_dotenv, set_key
 
-# Load environment variables
+# Load environment variabless
 load_dotenv('.env')
 access_token = os.getenv('ACCESS_TOKEN')
 refresh_token = os.getenv('REFRESH_TOKEN')
