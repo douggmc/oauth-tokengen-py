@@ -18,7 +18,7 @@ redirect_uri = os.getenv('REDIRECT_URI')
 header_token = {'Authorization': 'Bearer ' + access_token}
 
 
-# Outputs the Show Vendor API response to console
+# Output the Show Vendor API response to console
 def c_outputter(jsonr):
     outtxt = (json.dumps(jsonr.json(), indent=2))
     print(outtxt)
